@@ -130,8 +130,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseEntity<Object> frontAddStudent(StudentDTO studentDTO) {
         if (studentDTO != null) {
-            addStudent(studentDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (groupService.getGroupById(studentDTO.getGroupId()) != null) {
+                addStudent(studentDTO);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -140,10 +144,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseEntity<Object> frontUpdateStudent(StudentDTO studentDTO) {
         if (studentDTO != null) {
-            updateStudent(studentDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (groupService.getGroupById(studentDTO.getGroupId()) != null) {
+                updateStudent(studentDTO);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Override

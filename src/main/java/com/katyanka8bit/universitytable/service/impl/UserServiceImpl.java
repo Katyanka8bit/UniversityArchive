@@ -108,24 +108,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(UserDTO userDTO) {
         if (userDTO != null) {
-            User user = new User(userDTO.getFirstName(),
-                    userDTO.getLastName(), userDTO.getEmail(),
-                    bCryptPasswordEncoder.encode(userDTO.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+            if (userRepository.getUserByEmail(userDTO.getEmail()) == null) {
+                User user = new User(userDTO.getFirstName(),
+                        userDTO.getLastName(), userDTO.getEmail(),
+                        bCryptPasswordEncoder.encode(userDTO.getPassword()), Arrays.asList(new Role("ROLE_USER")));
 
-            if (!StringUtils.isEmpty(user.getEmail())) {
-                String message = String.format(
-                        "Hello, %s! \n" +
-                                "Welcome to University" + " " +
-                                "Your login: " + userDTO.getEmail() + " " +
-                                "Your password: " + userDTO.getPassword(),
-                        userDTO.getEmail(),
-                        userDTO.getPassword()
-                );
+                if (!StringUtils.isEmpty(user.getEmail())) {
+                    String message = String.format(
+                            "Hello, %s! \n" +
+                                    "Welcome to University" + " " +
+                                    "Your login: " + userDTO.getEmail() + " " +
+                                    "Your password: " + userDTO.getPassword(),
+                            userDTO.getEmail(),
+                            userDTO.getPassword()
+                    );
 
-                mailSender.send(user.getEmail(), "Welcome!", message);
+                    mailSender.send(user.getEmail(), "Welcome!", message);
+                }
+                user.setEmail(user.getEmail().toLowerCase());
+                return saveUser(user);
             }
-
-            return userRepository.save(user);
+            //такой пользователь уже существует
+            return null;
         }
         return null;
     }

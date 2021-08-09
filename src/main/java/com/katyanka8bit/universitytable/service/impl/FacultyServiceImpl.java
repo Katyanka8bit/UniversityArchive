@@ -119,8 +119,11 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public ResponseEntity<Object> frontAddFaculty(FacultyDTO facultyDTO) {
         if (facultyDTO != null) {
-            addFaculty(facultyDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (universityService.getUniversityById(facultyDTO.getUniversityId()) != null) {
+                addFaculty(facultyDTO);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

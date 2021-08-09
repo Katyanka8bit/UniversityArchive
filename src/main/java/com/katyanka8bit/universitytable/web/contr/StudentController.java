@@ -4,11 +4,12 @@ import com.katyanka8bit.universitytable.service.interf.StudentService;
 import com.katyanka8bit.universitytable.web.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/rest/students/")
 public class StudentController {
     private final StudentService studentService;

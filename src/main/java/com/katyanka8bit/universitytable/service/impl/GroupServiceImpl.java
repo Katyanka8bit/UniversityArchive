@@ -80,6 +80,7 @@ public class GroupServiceImpl implements GroupService {
         if (group != null) {
             if (!groupDTO.getName().equals(group.getName())) {
                 group.setName(groupDTO.getName());
+                groupRepository.save(group);
                 return group;
             }
         }
@@ -122,8 +123,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResponseEntity<Object> frontAddGroup(GroupDTO groupDTO) {
         if (groupDTO != null) {
-            addGroup(groupDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (facultyService.getFacultyById(groupDTO.getFacultyId()) != null) {
+                addGroup(groupDTO);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -132,8 +136,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResponseEntity<Object> frontUpdateGroup(GroupDTO groupDTO) {
         if (groupDTO != null) {
-            updateGroup(groupDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (facultyService.getFacultyById(groupDTO.getFacultyId()) != null) {
+                updateGroup(groupDTO);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

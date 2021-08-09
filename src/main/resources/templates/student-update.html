@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
-<title>Create faculty</title>
+<title>Update student</title>
 </head>
 <body>
-<form action="#" th:action="@{/group-update}" th:object="${groupDTO}" method="post">
+<form action="#" th:action="@{/student-update}" th:object="${studentDTO}" method="post">
     <label for="id">ID</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
     <br/>
